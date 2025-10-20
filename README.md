@@ -1,35 +1,89 @@
-## Note
-Setelah anda mengikuti video tutorial PART 3 Integrasi dengan cekmutasi.co.id, pastikan anda melakukan pengaturan pada file `cekmutasi_cekpembayaran.php`
+# Finote - Catatan Keuangan Modern
 
-**Lihat gambar dibawah**
+Aplikasi catatan keuangan responsif yang dibangun dengan Next.js 14, shadcn/ui, dan Prisma. Desain serta pengalaman pengguna terinspirasi dari estetika Laravel Filament untuk menghadirkan dasbor finansial yang rapi, intuitif, dan nyaman digunakan.
 
-![contoh cekmutasi](https://storage3.bukaolshop.com/other_image/ss_cekmutasi.png)
-Lakukan pergantian pada `service_code` dan `account_number`
+## Fitur utama
 
-`service_code` bisa anda sesuaikan dengan bank yang ada daftarkan di cekmutasi.co.id. Berikut ini daftar yang bisa anda inputkan:
+- 📊 **Ringkasan finansial** dengan kartu metrik interaktif (saldo, pemasukan, pengeluaran, transfer).
+- 🧾 **Manajemen transaksi lengkap**: tambah, ubah, dan hapus pemasukan/pengeluaran/transfer.
+- 🗂️ **Kategori & catatan** untuk setiap transaksi sehingga pencatatan lebih kontekstual.
+- ☁️ **Tema gelap & terang** menggunakan `next-themes`.
+- ⚡ **API berbasis Next.js** yang terhubung ke database MySQL atau SQLite melalui Prisma.
+- 🎨 **Komponen shadcn/ui** yang dikustomisasi sehingga tampil elegan ala Filament.
 
-**bri** = Bank BRI
+## Persyaratan
 
-**bca** = Bank BCA
+- Node.js 18 atau yang lebih baru
+- npm / pnpm / yarn
+- Database:
+  - **SQLite** (default, tanpa konfigurasi tambahan), atau
+  - **MySQL/MariaDB** jika ingin di-deploy secara terpusat
 
-**bni** = Bank BNI
+## Konfigurasi lingkungan
 
-**mandiri** = Bank Mandiri
+Salin berkas contoh environment lalu sesuaikan jika diperlukan.
 
-**btpn_jenius** = BTPN Jenius
+```bash
+cp .env.example .env
+```
 
-**mandiri_online** = Mandiri Online
+Secara bawaan aplikasi memakai SQLite. Untuk menggunakan MySQL, ubah nilai berikut pada `.env`:
 
-`account_number` merupakan nomor rekening anda. Contoh misalnya anda menggunakan bank **BNI** dengan nomor rekening **8836324995**, maka anda harus mengganti nilai tersebut menjadi :
+```env
+DATABASE_PROVIDER="mysql"
+DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+```
 
-"service_code" => "bni",
+> 💡 Prisma akan otomatis menyesuaikan tipe kolom ketika Anda menjalankan migrasi.
 
-"account_number" => "8836324995",
+## Instalasi & menjalankan aplikasi
 
-Pastikan tidak ada kesalahan penulisan kode agar pengecekan dapat berjalan dengan lancar.
+1. **Instal dependensi**
 
-## Tutorial PART 3 integrasi topup otomatis dengan cekmutasi.co.id bisa dilihat di video berikut
-Klik gambar dibawah untuk memutar video.
+   ```bash
+   npm install
+   ```
 
-[![IMAGE ALT TEXT HERE](http://i3.ytimg.com/vi/lLIYg6XUPu0/hqdefault.jpg)](https://www.youtube.com/watch?v=lLIYg6XUPu0&t=267s)
+2. **Generate Prisma Client serta push skema database**
 
+   ```bash
+   npx prisma db push
+   ```
+
+3. **Jalankan server pengembangan**
+
+   ```bash
+   npm run dev
+   ```
+
+4. Buka `http://localhost:3000` untuk melihat dasbor.
+
+## Struktur proyek singkat
+
+```
+app/
+  page.tsx                -> Halaman utama dasbor
+  api/transactions/       -> Endpoint RESTful untuk transaksi
+components/
+  transaction-form.tsx    -> Form tambah/ubah transaksi
+  transaction-table.tsx   -> Tabel daftar transaksi
+  summary-cards.tsx       -> Kartu ringkasan metrik finansial
+lib/
+  prisma.ts               -> Inisialisasi Prisma Client
+  validations.ts          -> Skema validasi dengan Zod
+prisma/
+  schema.prisma           -> Definisi skema database
+```
+
+## Script npm
+
+| Perintah           | Deskripsi                                   |
+| ------------------ | ------------------------------------------- |
+| `npm run dev`      | Menjalankan server pengembangan Next.js      |
+| `npm run build`    | Build aplikasi untuk produksi               |
+| `npm run start`    | Menjalankan build produksi                  |
+| `npm run lint`     | Menjalankan lint bawaan Next.js             |
+
+## Lisensi
+
+Proyek ini mengikuti lisensi MIT sebagaimana tercantum pada berkas `LICENSE`.
